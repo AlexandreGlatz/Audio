@@ -1,14 +1,13 @@
 # Audio Editor
 
-# Description
-Audio editor and wav parser for XAUDIO
+## Description
+Audio editor and wav parser for XAUDIO. 
 
-# Usage
+## Usage
 
-## Windows
-./Audio_app.exe <path-to-wav> <path-to-copy>
+### Windows
+```./Audio_app.exe <path-to-wav> <path-to-copy>```
 
 Example :
-
-./Audio_app.exe ../res/audio.wav ../res/copy.wav
+```./Audio_app.exe ../res/audio.wav ../res/copy.wav```
 
