@@ -30,15 +30,19 @@ public:
 		uint16 bytePerSample	= INVALID_INFO; //to divide by 8;
 
 		WAV_FILE_HEADER()
-		{ }
+		{ 
+
+		}
 	};
 
 	struct WAV_DATA_HEADER
 	{
-		uint32 dataBlockID;
-		uint32 dataSize;
+		uint32 dataBlockID		= INVALID_INFO;
+		uint32 dataSize			= INVALID_INFO;
 		WAV_DATA_HEADER()
-		{ }
+		{ 
+
+		}
 	};
 
 	struct WAV_INFO
@@ -48,7 +52,8 @@ public:
 		char* data;
 
 		WAV_INFO()
-		{ }
+		{
+		}
 	};
 
 	WAVParser();
@@ -58,6 +63,7 @@ public:
 	static void Debug(std::string path);
 	static void Write(std::string path, WAV_INFO info);
 	static std::optional<WAV_INFO> Serialise(WAV_FILE_HEADER header, char* data, int dataSize);
+	static void Cut(WAV_INFO* pInfo, float begin, float end);
 
 private:
 	static bool _CheckHeaderValidity(WAV_FILE_HEADER header);

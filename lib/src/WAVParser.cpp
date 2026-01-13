@@ -54,7 +54,7 @@ std::optional<WAVParser::WAV_INFO> WAVParser::Serialise(WAV_FILE_HEADER header, 
 
 	WAV_INFO info;
 	header.fileTypeBlockID = RIFF_ID;
-	header.fileSize = sizeof(WAV_FILE_HEADER) + sizeof(WAV_DATA_HEADER) + dataSize;
+	header.fileSize = sizeof(WAV_FILE_HEADER) + sizeof(WAV_DATA_HEADER) + dataSize - 8;
 	header.fileFormatID = WAVE_ID;
 
 	header.blocFormatID = FMT_ID;
@@ -71,6 +71,32 @@ std::optional<WAVParser::WAV_INFO> WAVParser::Serialise(WAV_FILE_HEADER header, 
 	info.data = data;
 
 	return info;
+}
+
+void WAVParser::Cut(WAV_INFO* pInfo, float begin, float end)
+{
+	if (end <= begin)
+		return;
+
+	if (pInfo == nullptr)
+		return;
+
+	int duration = (end - begin) * pInfo->header.sampleRate * pInfo->header.bytePerFrame;
+
+	if (duration >= pInfo->dataHeader.dataSize)
+		return;
+
+	int cutSize = pInfo->dataHeader.dataSize - duration;
+	char* cutData = new char[cutSize];
+
+	int start = begin * pInfo->header.sampleRate * pInfo->header.bytePerFrame;
+	int over = end * pInfo->header.sampleRate * pInfo->header.bytePerFrame;
+	int index = 0;
+	
+	memcpy(cutData, pInfo->data, start);
+	memcpy(cutData + start, pInfo->data + over, pInfo->dataHeader.dataSize - over);
+
+	pInfo->data = cutData;
 }
 
 void WAVParser::Debug(std::string path)
