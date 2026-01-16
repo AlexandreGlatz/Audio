@@ -75,25 +75,6 @@ int main(int argc, char* argv[])
     // Et c'est parti ! 
     source_voice->Start();
 
-    IXAudio2* pXAudio2 = nullptr;
-    IXAudio2MasteringVoice* pMasterVoice = nullptr;
-
-    // Initialisation
-    XAudio2Create(&pXAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
-    pXAudio2->CreateMasteringVoice(&pMasterVoice);
-
-    // Créer l’effet
-    MyGainEffect* myEffect = new MyGainEffect();
-
-    // Chaîne d’effets
-    XAUDIO2_EFFECT_DESCRIPTOR effectDesc = { myEffect, TRUE, 1 };
-    XAUDIO2_EFFECT_CHAIN effectChain = { 1, &effectDesc };
-
-    // Appliquer à la voix mastering
-    pMasterVoice->SetEffectChain(&effectChain);
-
-    // Exemple : changer le gain
-    myEffect->m_gain = 2.0f; // double le volume
     while (true) {
         XAUDIO2_VOICE_STATE state;
         source_voice->GetState(&state);
